@@ -1,0 +1,17 @@
+<component name="libraryTable">
+  <library name="Generated files" type="javaScript">
+    <properties>
+      <sourceFilesUrls>
+        <item url="file://$PROJECT_DIR$/js/Movable.js" />
+        <item url="file://$PROJECT_DIR$/js/Geometry.js" />
+        <item url="file://$PROJECT_DIR$/js/MoveCtrlKeyboard.js" />
+      </sourceFilesUrls>
+    </properties>
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/js/Movable.js" />
+      <root url="file://$PROJECT_DIR$/js/Geometry.js" />
+      <root url="file://$PROJECT_DIR$/js/MoveCtrlKeyboard.js" />
+    </CLASSES>
+    <SOURCES />
+  </library>
+</component>
