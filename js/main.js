@@ -67,7 +67,7 @@ setInterval(function() {
     obj.type = Types.enemy;
 
     pool.add(obj);
-}, 50);
+}, 1000);
 
 setInterval(function(){
 
@@ -75,7 +75,8 @@ setInterval(function(){
 
     drawer.clear();
 
-    for( var i = 0; i < pool.objects.length; i++ ) {
+    //for( var i = 0; i < pool.objects.length; i++ ) {
+    for( var i in  pool.objects) {
         var color = "";
         switch(pool.objects[i].type) {
             case Types.bullet:

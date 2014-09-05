@@ -44,15 +44,15 @@ Collisionable.makeCollisionable = function(obj, size, onCollision) {
 };
 
 function Pool(){
-    this.objects = [];
+    this.objects = {};
 }
 
 Pool.prototype.add = function(obj) {
     if( ! obj.movable instanceof Movable ) {
         throw new Error("Can't move this object!!!");
     }
-
-    this.objects.push(obj);
+    var seed = Math.random();
+    this.objects[seed.toString()] = obj;
 };
 
 Pool.prototype.setBounds = function(minBounds, maxBounds) {
@@ -61,36 +61,50 @@ Pool.prototype.setBounds = function(minBounds, maxBounds) {
 };
 
 Pool.prototype.update = function(t) {
-    for( var i = 0; i < this.objects.length; i++) {
+    for( var i in  this.objects) {
+    //for( var i = 0; i < this.objects.length; i++) {
         var obj = this.objects[i].movable;
         obj.update(t);
     }
 
+    var objectsToDelete = [];
     if( this.minBounds && this.maxBounds )
-    for( var i = 0; i < this.objects.length; ) {
+    for( var i in  this.objects) {
+    //for( var i = 0; i < this.objects.length; ) {
         var coordinate = this.objects[i].movable.coordinate;
         if( coordinate.x < this.minBounds.x || coordinate.y < this.minBounds.y ||
             coordinate.x >= this.maxBounds.x || coordinate.y >= this.maxBounds.y) {
-            this.objects.splice(i, 1);
-        } else {
-            i++;
+            //this.objects.splice(i, 1);
+            //delete this.objects[i];
+            objectsToDelete.push(i);
         }
     }
-
-    for( var i = 0; i < this.objects.length; ) {
-        var obj = this.objects[i];
-        if( obj.mortal instanceof Mortal && !obj.mortal.alive() )
-            this.objects.splice(i, 1);
-        else
-            i++;
+    for( var i = 0; i < objectsToDelete.length;  i++) {
+        delete this.objects[objectsToDelete[i]];
     }
 
-    for( var i = 0; i < this.objects.length; i++) {
+    objectsToDelete = [];
+    //for( var i = 0; i < this.objects.length; ) {
+    for( var i in  this.objects) {
+        var obj = this.objects[i];
+        if( obj.mortal instanceof Mortal && !obj.mortal.alive() )
+            //this.objects.splice(i, 1);
+            objectsToDelete.push(i);
+            //delete this.objects[i];
+    }
+    for( var i = 0; i < objectsToDelete.length;  i++) {
+        delete this.objects[objectsToDelete[i]];
+    }
+    //for( var i = 0; i < this.objects.length; i++) {
+    for( var i in  this.objects) {
         var obj1 = this.objects[i];
 
         if( obj1.collisionable instanceof Collisionable )
-        for( var j = i+1; j < this.objects.length; j++) {
+        //for( var j = i+1; j < this.objects.length; j++) {
+        for( var j in  this.objects) {
             var obj2 = this.objects[j];
+
+            if( i === j ) continue;
 
             var distance = Vector.distance(obj1.movable.coordinate, obj2.movable.coordinate);
 
@@ -98,8 +112,8 @@ Pool.prototype.update = function(t) {
             if( obj2.collisionable instanceof Collisionable ) {
                 if( obj1.collisionable.onCollision )
                     obj1.collisionable.onCollision(obj1, obj2);
-                if( obj2.collisionable.onCollision )
-                    obj2.collisionable.onCollision(obj2, obj1);
+//                if( obj2.collisionable.onCollision )
+//                    obj2.collisionable.onCollision(obj2, obj1);
             }
         }
     }
